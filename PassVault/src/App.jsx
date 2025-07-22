@@ -1,5 +1,5 @@
 import "./App.css";
-import { Title } from "./Components/title";
+import { Title } from "./Components/Title";
 import { PassDetails } from "./Components/PassDetails";
 import { Login } from "./Components/Login";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
