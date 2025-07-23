@@ -201,8 +201,19 @@ body {
     display: flex;
     line-height: 1.5rem;
     height: 3rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     text-overflow: ellipsis;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+}
+
+.pass-info>span::-webkit-scrollbar {
+    /* Chrome, safari, opera */
+    display: none;
 }
 
 .pass-username>span,
@@ -371,5 +382,11 @@ body {
 @media screen and (max-width: 420px) {
     .pass-info>span {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 614px) {
+    .scratch-new {
+        top: 33%;
     }
 }
