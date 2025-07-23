@@ -1,7 +1,7 @@
 import "./App.css";
 import { Title } from "./Components/Title";
 import { PassDetails } from "./Components/PassDetails";
-import { Login } from "./Components/Login";
+import { Main } from "./Components/Main/Main";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ScratchNew } from "./Components/ScratchNew";
 
@@ -11,8 +11,8 @@ function App() {
             <Router>
                 <Title />
                 <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/" element={<PassDetails />} />
+                    <Route path="/" element={<Main />} />
+                    <Route path="/card" element={<PassDetails />} />
                     <Route path="/add" element={<ScratchNew />} />
                 </Routes>
             </Router>

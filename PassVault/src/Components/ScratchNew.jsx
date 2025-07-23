@@ -45,7 +45,7 @@ export const ScratchNew = () => {
             ...data,
         });
         console.log("Saved");
-        navigate("/");
+        navigate("/card");
     };
 
     return (

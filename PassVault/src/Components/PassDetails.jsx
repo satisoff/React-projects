@@ -27,7 +27,7 @@ export const PassDetails = () => {
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
     useEffect(() => {
-        if (!user) navigate("/login");
+        if (!user) navigate("/");
     }, []);
 
     const [cardsList, setCardList] = useState([]);

@@ -1,0 +1,87 @@
+/* src/main.css */
+:root {
+    --bg: #121212;
+    --card-bg: #1f1f1f;
+    --text: #e0e0e0;
+    --accent: #bb86fc;
+}
+
+body,
+html,
+.home-container {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.home-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.home-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.home-header h1 {
+    margin: 0;
+    font-size: 3rem;
+    color: var(--accent);
+}
+
+.home-header p {
+    margin-top: 0.5rem;
+    font-size: 1.25rem;
+    opacity: 0.8;
+}
+
+.home-section {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.home-section h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    font-size: 1.5rem;
+}
+
+.home-section p,
+.home-section ul,
+.home-section ol {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.home-section ul,
+.home-section ol {
+    padding-left: 1.25rem;
+}
+
+.home-section li {
+    margin-bottom: 0.5rem;
+}
+
+.sign-in-button {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.sign-in-button:hover {
+    opacity: 0.9;
+}

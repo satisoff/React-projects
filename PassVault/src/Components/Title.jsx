@@ -2,15 +2,16 @@ import { motion } from "framer-motion";
 import { auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Title = () => {
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSignOut = async () => {
         await signOut(auth);
-        navigate("/login");
+        navigate("/");
     };
     return (
         <motion.div className="title">
@@ -33,10 +34,18 @@ export const Title = () => {
 
                     <div className="nav-cards">
                         <img
-                            src="https://img.icons8.com/?size=100&id=8OdwzXFjBVH2&format=png&color=000000"
+                            src={
+                                location.pathname === "/"
+                                    ? "https://img.icons8.com/?size=100&id=8OdwzXFjBVH2&format=png&color=000000"
+                                    : "https://img.icons8.com/?size=100&id=euc8ZKJJqR5v&format=png&color=000000"
+                            }
                             alt=""
                             className="nav-img"
-                            onClick={() => navigate("/")}
+                            onClick={() => {
+                                location.pathname === "/"
+                                    ? navigate("/card")
+                                    : navigate("/");
+                            }}
                         />
                     </div>
 

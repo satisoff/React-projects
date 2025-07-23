@@ -22,15 +22,11 @@ const fadeSlide = {
 export const PassCard = (props) => {
     const [currentUsername, setCurrentUsername] = useState(props.username);
     const [currentPassword, setCurrentPassword] = useState(props.password);
-
-    const [isCopied, setIsCopied] = useState(false);
-
     const [isEdit, setIsEdit] = useState(false);
 
     const handleCopy = async (e) => {
         if (isEdit) return; // Prevent copying when in edit mode
         await navigator.clipboard.writeText(e.currentTarget.innerText);
-        setIsCopied(true);
     };
 
     const handleEdit = () => {

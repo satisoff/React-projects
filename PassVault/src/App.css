@@ -48,8 +48,8 @@ body {
 /* Title Details */
 .title {
     text-align: center;
-    padding: 2rem 3rem;
-    font-size: 2rem;
+    padding: 1.5rem 3rem;
+    font-size: 1.8rem;
     position: relative;
     max-width: 100%;
     overflow: hidden;
@@ -93,8 +93,8 @@ body {
 .nav-add {
     position: fixed;
     bottom: 5%;
-    height: 4rem;
-    width: 4rem;
+    height: 3.5rem;
+    width: 3.5rem;
     border-radius: 50%;
     cursor: pointer;
     background-color: transparent;
@@ -124,7 +124,7 @@ body {
 /* Pass Details */
 .pass-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 500px));
     padding: 4% 8%;
     overflow: hidden;
     gap: 5%;
@@ -184,36 +184,14 @@ body {
     cursor: pointer;
 }
 
-.pass-username {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    max-width: 90%;
-    min-height: 2.5rem;
-}
-
 .pass-info>span {
     padding: 0.5rem;
     background: var(--card-background);
     border-radius: 5px;
-    flex: 1 1 auto;
-    display: flex;
-    line-height: 1.5rem;
-    height: 3rem;
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-overflow: ellipsis;
-    /* Hide scrollbar */
-    scrollbar-width: none;
-    /* Firefox */
-    -ms-overflow-style: none;
-    /* Internet Explorer 10+ */
-}
-
-.pass-info>span::-webkit-scrollbar {
-    /* Chrome, safari, opera */
-    display: none;
+    flex: 1 1 0;
+    min-width: 0;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .pass-username>span,
