@@ -20,8 +20,8 @@ const fadeSlide = {
 };
 
 export const PassCard = (props) => {
-    const [currentUsername, setCurrentUsername] = useState("");
-    const [currentPassword, setCurrentPassword] = useState("");
+    const [currentUsername, setCurrentUsername] = useState(props.username);
+    const [currentPassword, setCurrentPassword] = useState(props.password);
 
     const [isCopied, setIsCopied] = useState(false);
 
