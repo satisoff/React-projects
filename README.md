@@ -86,7 +86,7 @@ React-projects/
 
 
 **Deployment:**
-[passvault.vercel.app](https://passwordvault-three.vercel.app/login)
+[passvault.vercel.app](https://passwordvault-three.vercel.app)
 
 ---
 
