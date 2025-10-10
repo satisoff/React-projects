@@ -166,6 +166,7 @@ body {
     flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
+    min-height: 2.9rem;
     overflow: hidden;
 }
 
@@ -192,6 +193,9 @@ body {
     min-width: 0;
     word-break: break-word;
     white-space: normal;
+    min-height: 3rem;
+    max-height: 3.5rem;
+    overflow-y: auto;
 }
 
 .pass-username>span,
@@ -357,14 +361,24 @@ body {
 }
 
 /* media queries for nav links */
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 767px) {
     .pass-info>span {
         width: 100%;
+    }
+
+    .pass-container {
+        padding: 2% auto;
+        gap: 100%;
     }
 }
 
 @media screen and (max-width: 614px) {
     .scratch-new {
         top: 33%;
+    }
+
+    .pass-container {
+        padding: 4% auto;
+        gap: 2%;
     }
 }
