@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { db } from "../config/firebase";
-import { collection, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 const fadeSlide = {
     initial: {
@@ -19,14 +19,34 @@ const fadeSlide = {
     },
 };
 
-export const PassCard = (props) => {
-    const [currentUsername, setCurrentUsername] = useState(props.username);
-    const [currentPassword, setCurrentPassword] = useState(props.password);
-    const [isEdit, setIsEdit] = useState(false);
+const PASSWORD_MASK = "*".repeat(10);
 
-    const handleCopy = async (e) => {
+const EyeIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+    </svg>
+);
+
+const EyeOffIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+        <line x1="1" y1="1" x2="23" y2="23" />
+    </svg>
+);
+
+export const PassCard = (props) => {
+    const [username, setUsername] = useState(props.username);
+    const [password, setPassword] = useState(props.password);
+    const [isEdit, setIsEdit] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const usernameRef = useRef(null);
+    const passwordRef = useRef(null);
+
+    const handleCopy = async (value) => {
         if (isEdit) return; // Prevent copying when in edit mode
-        await navigator.clipboard.writeText(e.currentTarget.innerText);
+        await navigator.clipboard.writeText(value);
+        props.onCopy();
     };
 
     const handleEdit = () => {
@@ -35,48 +55,73 @@ export const PassCard = (props) => {
     };
 
     const handleUpdate = async () => {
+        // Read edits from the DOM on save; syncing state on every keystroke
+        // re-renders the contentEditable and resets the caret
+        const newUsername = usernameRef.current.innerText;
+        const newPassword = passwordRef.current.innerText;
+        setUsername(newUsername);
+        setPassword(newPassword);
+
         const docRef = doc(db, "passDb", props.docId);
         await updateDoc(docRef, {
-            username: currentUsername,
-            password: currentPassword,
+            username: newUsername,
+            password: newPassword,
         });
     };
 
-    const handleUsernameInput = (e) => {
-        setCurrentUsername(e.target.innerText);
-    };
-
-    const handlePasswordInput = (e) => {
-        setCurrentPassword(e.target.innerText);
-    };
+    // Editing always works on the real password, never on the mask
+    const passwordText = isEdit || showPassword ? password : PASSWORD_MASK;
 
     return (
         <motion.div className="pass-card" variants={fadeSlide}>
-            <motion.p className="pass-name pass-info">
-                Name/Site: <span>{props.name}</span>
-            </motion.p>
+            <motion.div className="pass-header">
+                <span className="pass-avatar">
+                    {props.name?.charAt(0).toUpperCase()}
+                </span>
+                <p className="pass-name" title={props.name}>
+                    {props.name}
+                </p>
+            </motion.div>
             <motion.p className="pass-username pass-info">
-                Username:
+                <span className="pass-label">Username</span>
                 <span
-                    onClick={handleCopy}
+                    // Remount on mode switch so React never patches user-edited DOM
+                    key={isEdit ? "edit" : "view"}
+                    ref={usernameRef}
+                    onClick={() => handleCopy(username)}
                     contentEditable={isEdit}
-                    className={isEdit ? "" : "is-pointer"}
-                    onInput={handleUsernameInput}
+                    suppressContentEditableWarning
+                    className={`pass-value ${isEdit ? "is-editing" : "is-pointer"}`}
                 >
-                    {props.username}
+                    {username}
                     {!isEdit && <span className="copy-icon"></span>}
                 </span>
             </motion.p>
             <motion.p className="pass-password pass-info">
-                Password:
-                <span
-                    onClick={handleCopy}
-                    contentEditable={isEdit}
-                    className={isEdit ? "" : "is-pointer"}
-                    onInput={handlePasswordInput}
-                >
-                    {props.password}
-                    {!isEdit && <span className="copy-icon"></span>}
+                <span className="pass-label">Password</span>
+                <span className="pass-field">
+                    <span
+                        key={isEdit ? "edit" : "view"}
+                        ref={passwordRef}
+                        onClick={() => handleCopy(password)}
+                        contentEditable={isEdit}
+                        suppressContentEditableWarning
+                        className={`pass-value ${isEdit ? "is-editing" : "is-pointer"}`}
+                    >
+                        {passwordText}
+                        {!isEdit && <span className="copy-icon"></span>}
+                    </span>
+                    {!isEdit && (
+                        <button
+                            type="button"
+                            className="pass-toggle"
+                            onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                            title={showPassword ? "Hide password" : "Show password"}
+                        >
+                            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                    )}
                 </span>
             </motion.p>
 

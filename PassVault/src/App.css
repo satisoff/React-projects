@@ -47,12 +47,74 @@ body {
 
 /* Title Details */
 .title {
-    text-align: center;
-    padding: 1.5rem 3rem;
+    padding: 2.25rem 1.5rem 1rem;
     font-size: 1.8rem;
     position: relative;
     max-width: 100%;
     overflow: hidden;
+}
+
+/* equal side columns keep the search bar centered regardless of title/avatar width */
+.title-bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 2.25rem;
+}
+
+.title h1 {
+    grid-column: 1;
+    min-width: 0;
+    text-align: left;
+    /* default line-height leaves descender space below "Vault", pushing it above the search bar's midline */
+    line-height: 1;
+}
+
+.title-bar .user-icon {
+    grid-column: 3;
+    justify-self: end;
+}
+
+.search-bar {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: min(480px, 45vw);
+    padding: 0.6rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--bg-border);
+    border-radius: 999px;
+    color: var(--subtle-text);
+    cursor: text;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-bar:focus-within {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.search-bar svg {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+}
+
+.search-bar input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.search-bar input::placeholder {
+    color: var(--subtle-text);
 }
 
 .title::after {
@@ -72,10 +134,7 @@ body {
     border-radius: 50%;
     background-position: center;
     background-size: cover;
-    position: absolute;
-    right: 3%;
-    bottom: 6%;
-    transform: translate(-4%, -8%);
+    flex-shrink: 0;
     cursor: pointer;
     border: 1px solid var(--text-color);
     box-shadow: 0 0 10px var(--subtle-text);
@@ -124,90 +183,192 @@ body {
 /* Pass Details */
 .pass-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 500px));
-    padding: 4% 8%;
-    overflow: hidden;
-    gap: 5%;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    align-items: start;
+    /* scales from phone to desktop; still fits 3 columns at max-width */
+    gap: clamp(1.5rem, 3vw, 2.5rem);
     width: 100%;
-    /* position: relative; */
+    max-width: 1200px;
+    margin: 0 auto;
+    /* bottom padding keeps the last row clear of the fixed nav buttons */
+    padding: 2rem clamp(1rem, 4vw, 3rem) 7rem;
 }
 
 /* Pass Card */
-.pass-card {
-    border: 1px solid;
-    padding: 2rem 1.5rem;
-    border-radius: 10px;
-    justify-self: center;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1.2rem;
-    font-size: 1.5rem;
-    border-color: var(--border);
-    box-shadow: 0 4px 10px var(--bg-shadow);
-    overflow: hidden;
+.pass-empty {
+    grid-column: 1 / -1;
+    padding: 3rem 0;
+    text-align: center;
+    color: var(--subtle-text);
+    overflow-wrap: anywhere;
 }
 
-.pass-actions {
-    margin-top: 0.5rem;
-    width: 100%;
+.pass-card {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--bg-shadow);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pass-card:hover {
+    border-color: var(--bg-border);
+    box-shadow: 0 8px 20px var(--bg-shadow);
+}
+
+.pass-header {
+    display: flex;
     align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.pass-avatar {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    color: var(--button-text);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.pass-name {
+    min-width: 0;
+    font-size: 1.3rem;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .pass-info {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1rem;
-    width: 100%;
-    min-height: 2.9rem;
-    overflow: hidden;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.pass-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle-text);
+}
+
+.pass-value {
+    position: relative;
+    display: block;
+    min-height: 2.6rem;
+    padding: 0.6rem 0.75rem;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 1rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    background: var(--background);
+    border: 1px solid var(--bg-border);
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pass-value.is-pointer {
+    cursor: pointer;
+}
+
+.pass-value.is-editing {
+    cursor: text;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.pass-field {
+    position: relative;
+}
+
+/* room for the eye toggle */
+.pass-field .pass-value {
+    padding-right: 2.75rem;
+}
+
+.pass-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.4rem;
+    transform: translateY(-50%);
+    /* above the copy-icon overlay */
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--subtle-text);
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.pass-toggle:hover {
+    color: var(--text-color);
+    background-color: var(--surface);
+}
+
+.pass-toggle svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.pass-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
 }
 
 .pass-action {
-    font-size: 1.2rem;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
+    padding: 0.5rem 1.1rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.pass-edit {
     background-color: var(--button-bg);
     color: var(--button-text);
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-.pass-action:hover {
+.pass-edit:hover {
     background-color: var(--button-hover-bg);
-    cursor: pointer;
 }
 
-.pass-info>span {
-    padding: 0.5rem;
-    background: var(--card-background);
-    border-radius: 5px;
-    flex: 1 1 0;
-    min-width: 0;
-    word-break: break-word;
-    white-space: normal;
-    min-height: 3rem;
-    max-height: 3.5rem;
-    overflow-y: auto;
+.pass-delete {
+    background-color: transparent;
+    border-color: var(--primary-red);
+    color: var(--accent-red);
 }
 
-.pass-username>span,
-.pass-password>span {
-    position: relative;
-    box-shadow: 0 4px 10px var(--bg-shadow);
-    border: 1px solid var(--bg-border);
-}
-
-.pass-username>span.is-pointer,
-.pass-password>span.is-pointer {
-    cursor: pointer;
+.pass-delete:hover {
+    background-color: var(--primary-red);
+    color: var(--button-text);
 }
 
 .copy-icon {
@@ -226,6 +387,27 @@ body {
 
 .copy-icon:hover {
     opacity: 1;
+}
+
+/* Copy toast */
+.toast {
+    position: fixed;
+    left: 0;
+    right: 0;
+    /* vertically level with the fixed nav buttons */
+    bottom: calc(5% + 0.65rem);
+    z-index: 20;
+    width: fit-content;
+    /* centered via margins: framer-motion owns transform for the slide-in */
+    margin: 0 auto;
+    padding: 0.5rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--bg-border);
+    border-radius: 999px;
+    box-shadow: 0 4px 12px var(--bg-shadow);
+    color: var(--text-color);
+    font-size: 0.95rem;
+    pointer-events: none;
 }
 
 /* Login Container */
@@ -362,23 +544,41 @@ body {
 
 /* media queries for nav links */
 @media screen and (max-width: 767px) {
-    .pass-info>span {
+    .title {
+        padding: 1.5rem 1rem 0.75rem;
+        font-size: 1.2rem;
+    }
+
+    /* title and avatar share the top row; search drops to its own row */
+    .title-bar {
+        grid-template-columns: 1fr auto;
+        gap: 1rem;
+        padding: 0 1.25rem;
+    }
+
+    .title-bar .user-icon {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .search-bar {
+        grid-column: 1 / -1;
+        grid-row: 2;
         width: 100%;
     }
 
     .pass-container {
-        padding: 2% auto;
-        gap: 100%;
+        gap: 1.5rem;
+        padding: 1.5rem 1.25rem 7rem;
+    }
+
+    .pass-card {
+        padding: 1.25rem;
     }
 }
 
 @media screen and (max-width: 614px) {
     .scratch-new {
         top: 33%;
-    }
-
-    .pass-container {
-        padding: 4% auto;
-        gap: 2%;
     }
 }
