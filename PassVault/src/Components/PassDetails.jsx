@@ -60,9 +60,15 @@ export const PassDetails = ({ search = "" }) => {
 
     const [showToast, setShowToast] = useState(false);
     const toastTimer = useRef(null);
+    const copySound = useRef(null);
 
     // Restart the timer on every copy so back-to-back copies keep one toast up
     const handleCopied = () => {
+        copySound.current ??= new Audio("/not1.mp3");
+        // Rewind so rapid copies replay the sound instead of being ignored mid-play
+        copySound.current.currentTime = 0;
+        copySound.current.play().catch(() => {});
+
         clearTimeout(toastTimer.current);
         setShowToast(true);
         toastTimer.current = setTimeout(() => setShowToast(false), TOAST_DURATION);
